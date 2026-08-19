@@ -612,6 +612,50 @@
             flex-shrink: 0;
         }
 
+        /* ----- حقل الوصف (الملاحظات) ----- */
+        .cart-note {
+            margin-bottom: 16px;
+        }
+
+        .cart-note label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .cart-note label i {
+            color: var(--gold);
+            margin-left: 6px;
+        }
+
+        .cart-note textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #444;
+            background: #1e1e1e;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 60px;
+            max-height: 120px;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .cart-note textarea:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.15);
+        }
+
+        .cart-note textarea::placeholder {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
         .cart-total {
             display: flex;
             justify-content: space-between;
@@ -859,6 +903,11 @@
                 font-size: 0.85rem;
                 max-width: 90%;
             }
+
+            .cart-note textarea {
+                min-height: 50px;
+                font-size: 0.85rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1003,13 +1052,19 @@
                 </div>
             </div>
             <div class="cart-footer" id="cartFooter" style="display:none;">
+                <!-- حقل الملاحظات / الوصف -->
+                <div class="cart-note">
+                    <label for="orderNote"><i class="fas fa-pen"></i> ملاحظاتك (اختياري)</label>
+                    <textarea id="orderNote" placeholder="أضف أي ملاحظات أو طلبات خاصة ... (مثل: بدون بصل، زيادة صوص، وقت التوصيل ...)"></textarea>
+                </div>
+
                 <div class="cart-total">
                     <span>المجموع</span>
                     <span class="total-price" id="cartTotal">0 ل.ل</span>
                 </div>
                 <div class="cart-actions">
-                    <button class="btn btn-clear" id="cartClearBtn"><i class="fas fa-trash"></i> Cancel</button>
-                    <button class="btn btn-send" id="cartSendBtn"><i class="fab fa-whatsapp"></i> Send Order</button>
+                    <button class="btn btn-clear" id="cartClearBtn"><i class="fas fa-trash"></i> إلغاء</button>
+                    <button class="btn btn-send" id="cartSendBtn"><i class="fab fa-whatsapp"></i> إرسال الطلب</button>
                 </div>
             </div>
         </div>
@@ -1073,6 +1128,7 @@
         const cartCloseBtn = document.getElementById('cartCloseBtn');
         const cartClearBtn = document.getElementById('cartClearBtn');
         const cartSendBtn = document.getElementById('cartSendBtn');
+        const orderNote = document.getElementById('orderNote');
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toastMessage');
 
@@ -1082,12 +1138,6 @@
         function formatPrice(price) {
             if (price === null || price === undefined) return '---- ل.ل';
             return price.toLocaleString() + ' ل.ل';
-        }
-
-        function getNumericPrice(priceStr) {
-            if (!priceStr) return null;
-            const cleaned = priceStr.replace(/[^0-9]/g, '');
-            return cleaned ? parseInt(cleaned, 10) : null;
         }
 
         function isItemAvailable(item) {
@@ -1183,8 +1233,9 @@
         function clearCart() {
             if (Object.keys(cart).length === 0) return;
             cart = {};
+            orderNote.value = ''; // مسح الملاحظات أيضاً
             updateCartUI();
-            showToast('cancel order');
+            showToast('🗑️ تم إلغاء الطلب');
         }
 
         function getTotalItems() {
@@ -1296,6 +1347,7 @@
             });
 
             const totalPrice = getTotalPrice();
+            const note = orderNote.value.trim();
 
             let message = '🛍️ *طلب جديد من CHARKO*\n';
             message += `📅 ${dateStr} - ${timeStr}\n\n`;
@@ -1309,6 +1361,12 @@
 
             message += '─────────────────\n';
             message += `💰 *المجموع:* ${formatPrice(totalPrice)}\n\n`;
+
+            // إضافة الملاحظات إذا وجدت
+            if (note) {
+                message += `📝 *ملاحظات العميل:*\n${note}\n\n`;
+            }
+
             message += '📍 العنوان: الضاحية مقابل موقف رقم ٤ الجديد\n';
             message += '📞 للتواصل: 71 - 857 572';
 
@@ -1320,6 +1378,7 @@
 
             // اختياري: تفريغ السلة بعد الإرسال (يمكن تعطيلها)
             // cart = {};
+            // orderNote.value = '';
             // updateCartUI();
             // closeCartModal();
             // showToast('✅ تم إرسال الطلب! سنتصل بك قريباً.');
@@ -1330,6 +1389,10 @@
             renderCartModal();
             cartOverlay.classList.add('open');
             document.body.style.overflow = 'hidden';
+            // التركيز على حقل الملاحظات إذا كان ظاهراً
+            if (Object.keys(cart).length > 0) {
+                setTimeout(() => orderNote.focus(), 300);
+            }
         }
 
         function closeCartModal() {
@@ -1349,7 +1412,7 @@
         // ----- أزرار المودال -----
         cartClearBtn.addEventListener('click', function() {
             if (Object.keys(cart).length === 0) return;
-            if (confirm('Cancel the Order ?')) {
+            if (confirm('هل أنت متأكد من إلغاء الطلب؟')) {
                 clearCart();
             }
         });
