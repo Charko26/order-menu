@@ -975,15 +975,15 @@
     <section class="menu-section" id="menu">
         <div class="container">
             <div class="section-header">
-                <h2>القائمة <span>الرئيسية</span></h2>
+                <h2>Order <span>MENU</span></h2>
                 <div class="divider"></div>
             </div>
 
             <div class="menu-tabs" id="menuTabs">
-                <button class="menu-tab active" data-category="all">الكل</button>
-                <button class="menu-tab" data-category="وجبات">وجبات</button>
+                <button class="menu-tab active" data-category="وجبات">وجبات</button>
                 <button class="menu-tab" data-category="فروج عالفحم">فروج عالفحم</button>
                 <button class="menu-tab" data-category="سندويشات">سندويشات</button>
+                <button class="menu-tab" data-category="صوص">صوص</button>
                 <button class="menu-tab" data-category="مشروبات">مشروبات باردة</button>
             </div>
 
@@ -1079,28 +1079,26 @@
         // ----- بيانات القائمة (مع أسعار رقمية) -----
         const menuData = [
             { id: 1, name: 'وجبة دجاج كبيرة', category: 'وجبات', price: 750000 },
-            { id: 2, name: 'وجبة دجاج صغيرة', category: 'وجبات', price: 580000 },
-            { id: 3, name: 'وجبة لقم', category: 'وجبات', price: 700000 },
-            { id: 4, name: 'وجبة جوانج', category: 'وجبات', price: 750000 },
-            { id: 5, name: 'وجبة أسمر', category: 'وجبات', price: 700000 },
-            { id: 6, name: 'صحن طاووق', category: 'وجبات', price: null },
-            { id: 7, name: 'علبة بطاطا', category: 'وجبات', price: 200000 },
-            { id: 8, name: 'فروج جاهز', category: 'فروج عالفحم', price: 1200000 },
-            { id: 9, name: 'نصف فروج', category: 'فروج عالفحم', price: 650000 },
-            { id: 10, name: 'فروج سفين', category: 'فروج عالفحم', price: 1400000 },
-            { id: 11, name: 'نصف سفين', category: 'فروج عالفحم', price: 750000 },
-            { id: 12, name: 'فروج فخاد', category: 'فروج عالفحم', price: 1200000 },
-            { id: 13, name: 'نصف فخاد', category: 'فروج عالفحم', price: 650000 },
-            { id: 14, name: 'فروج فخاد مسحب', category: 'فروج عالفحم', price: null },
-            { id: 15, name: 'دجاج كبير', category: 'سندويشات', price: 480000 },
-            { id: 16, name: 'دجاج صغير', category: 'سندويشات', price: 350000 },
-            { id: 17, name: 'بطاطا كبير', category: 'سندويشات', price: 200000 },
-            { id: 18, name: 'باغيت أسمر', category: 'سندويشات', price: 430000 },
-            { id: 19, name: 'طاووق', category: 'سندويشات', price: 400000 },
-            { id: 20, name: 'شاركو برغر', category: 'سندويشات', price: 400000 },
-            { id: 21, name: 'عيران', category: 'مشروبات', price: 100000 },
-            { id: 22, name: 'مياه صغير', category: 'مشروبات', price: 50000 },
-            { id: 23, name: 'مشروبات غازية', category: 'مشروبات', price: 100000 }
+            { id: 2, name: 'وجبة دجاج صغيرة', category: 'وجبات', price: 550000 },
+            { id: 3, name: 'وجبة جوانج', category: 'وجبات', price: 750000 },
+            { id: 4, name: 'علبة بطاطا', category: 'وجبات', price: 200000 },
+            { id: 5, name: 'فروج جاهز', category: 'فروج عالفحم', price: 1200000 },
+            { id: 6, name: 'نصف فروج', category: 'فروج عالفحم', price: 650000 },
+            { id: 7, name: 'فروج سفين', category: 'فروج عالفحم', price: 1400000 },
+            { id: 8, name: 'نصف سفين', category: 'فروج عالفحم', price: 750000 },
+            { id: 9, name: 'فروج فخاد', category: 'فروج عالفحم', price: 1200000 },
+            { id: 10, name: 'نصف فخاد', category: 'فروج عالفحم', price: 650000 },
+            { id: 11, name: 'دجاج كبير', category: 'سندويشات', price: 450000 },
+            { id: 12, name: 'دجاج صغير', category: 'سندويشات', price: 300000 },
+            { id: 13, name: 'بطاطا', category: 'سندويشات', price: 200000 },
+            // ---- صوص (Sauce) ----
+            { id: 14, name: 'علبة ثوم', category: 'صوص', price: 100000 },
+            { id: 15, name: 'علبة حر', category: 'صوص', price: 100000 },
+            { id: 16, name: 'علبة كبيس', category: 'صوص', price: 100000 },
+            // ---- مشروبات ----
+            { id: 17, name: 'عيران', category: 'مشروبات', price: 100000 },
+            { id: 18, name: 'مياه صغير', category: 'مشروبات', price: 50000 },
+            { id: 19, name: 'مشروبات غازية', category: 'مشروبات', price: 100000 }
         ];
 
         // ----- حالة العربة -----
@@ -1136,7 +1134,7 @@
         }
 
         // ----- عرض القائمة -----
-        function renderMenu(category = 'all') {
+        function renderMenu(category = 'وجبات') {
             const filtered = category === 'all' ?
                 menuData :
                 menuData.filter(item => item.category === category);
@@ -1338,7 +1336,7 @@
             });
 
             message += '─────────────────\n';
-             if (note) {
+            if (note) {
                 message += ` *ملاحظات العميل:*\n${note}\n\n`;
             }
             message += '─────────────────\n';
@@ -1396,6 +1394,7 @@
             }, 2500);
         }
 
+
         // ----- التبويبات -----
         menuTabs.forEach(tab => {
             tab.addEventListener('click', function() {
@@ -1405,8 +1404,8 @@
             });
         });
 
-        // ----- تحميل القائمة -----
-        renderMenu('all');
+        // ----- تحميل القائمة (التبويب الأول "وجبات" نشط افتراضياً) -----
+        renderMenu('وجبات');
         updateCartUI();
     </script>
 </body>
